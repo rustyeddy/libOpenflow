@@ -6,7 +6,7 @@ import (
 	"net"
 	"strings"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 )
 
 const numParserGoroutines = 25
@@ -156,9 +156,10 @@ func (m *MessageStream) parse() {
 		select {
 		case b := <-m.pool.Full:
 			msg, err := m.parser.Parse(b.Bytes())
+
 			// Log all message parsing errors.
 			if err != nil {
-				log.Errorf(errMessage, b.Bytes(), err)
+				log.Errorf("RRR: "+errMessage, b.Bytes(), err)
 			}
 
 			m.Inbound <- msg

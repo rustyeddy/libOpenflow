@@ -2,8 +2,9 @@ package openflow13
 
 import (
 	"encoding/binary"
+	"fmt"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 
 	"github.com/contiv/libOpenflow/common"
 	"github.com/contiv/libOpenflow/util"
@@ -920,6 +921,22 @@ func NewPortStatus() *PortStatus {
 	p.Header = NewOfp13Header()
 	p.pad = make([]byte, 7)
 	return p
+}
+
+func (p *PortStatus) String() string {
+	var reason string
+	switch p.Reason {
+	case 0:
+		reason = "Add"
+	case 1:
+		reason = "Delete"
+	case 2:
+		reason = "Modify"
+	default:
+		reason = "Mystery"
+	}
+	return fmt.Sprintf("Port Status Reason %d (%s) %+v",
+		p.Reason, reason, p.Desc)
 }
 
 func (p *PortStatus) Len() (n uint16) {
